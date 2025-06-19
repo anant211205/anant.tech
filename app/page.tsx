@@ -32,7 +32,17 @@ export default function Portfolio() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["hero", "about", "projects", "contact"]
-      const scrollPosition = window.scrollY + 100
+      const scrollPosition = window.scrollY + 200 // Increased offset for better detection
+
+      // Check if we're near the bottom of the page (contact section)
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      const isNearBottom = scrollPosition + windowHeight >= documentHeight - 100
+
+      if (isNearBottom) {
+        setActiveSection("contact")
+        return
+      }
 
       for (const section of sections) {
         const element = document.getElementById(section)
@@ -47,6 +57,9 @@ export default function Portfolio() {
     }
 
     window.addEventListener("scroll", handleScroll)
+    // Call once on mount to set initial state
+    handleScroll()
+
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -121,7 +134,6 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* Desktop Navigation - Hidden on mobile */}
       <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 z-50">
         <div className="bg-white/90 backdrop-blur-sm rounded-xl p-1 shadow-lg border border-gray-200">
           <div className="flex flex-col space-y-1">
@@ -147,7 +159,6 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -156,7 +167,6 @@ export default function Portfolio() {
           {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
         </button>
 
-        {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
           <div className="fixed inset-0 bg-black/20 backdrop-blur-sm">
             <div className="absolute top-16 right-4 bg-white rounded-xl p-3 shadow-xl border border-gray-200 min-w-[180px]">
@@ -181,7 +191,6 @@ export default function Portfolio() {
         )}
       </div>
 
-      {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center justify-center px-4 sm:px-6 relative py-8 sm:py-12">
         <div className="absolute inset-0 opacity-5">
           <div
@@ -194,7 +203,6 @@ export default function Portfolio() {
         </div>
 
         <div className="text-center max-w-2xl mx-auto relative">
-          {/* Profile Image */}
           <div className="mb-6 sm:mb-8">
             <div className="relative mx-auto w-16 h-16 sm:w-20 sm:h-20 mb-4 sm:mb-6">
               <Image
@@ -220,7 +228,6 @@ export default function Portfolio() {
             {"Love building apps that solve real problems and complex challenges through innovative technology"}
           </p>
 
-          {/* Social Links */}
           <div className="flex justify-center space-x-3 sm:space-x-4 mb-6 sm:mb-8">
             {[
               { href: "https://github.com/anant211205", icon: Github, label: "GitHub" },
@@ -238,7 +245,6 @@ export default function Portfolio() {
             ))}
           </div>
 
-          {/* Contact Info */}
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 sm:space-x-6 mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500">
             <div className="flex items-center space-x-1.5">
               <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -259,7 +265,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about" className="py-8 sm:py-12 px-4 sm:px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
@@ -268,7 +273,6 @@ export default function Portfolio() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-5 sm:gap-8">
-            {/* Education & Leadership */}
             <div className="flex flex-col space-y-4 sm:space-y-6">
               <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <CardHeader className="pb-3 sm:pb-4">
@@ -330,7 +334,6 @@ export default function Portfolio() {
               </Card>
             </div>
 
-            {/* Skills */}
             <div className="flex flex-col">
               <div className="space-y-3 sm:space-y-4">
                 {Object.entries(skills).map(([category, skillList]) => (
@@ -360,7 +363,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Section */}
       <section id="projects" className="py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
@@ -392,7 +394,6 @@ export default function Portfolio() {
                     )}
                   </div>
 
-                  {/* Project Content */}
                   <div className="p-4 sm:p-5 space-y-3 sm:space-y-4 order-2 lg:order-none">
                     <div>
                       <div className="flex items-center space-x-2 mb-2">
@@ -457,7 +458,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section id="contact" className="py-8 sm:py-12 px-4 sm:px-6 bg-gray-50">
         <div className="max-w-2xl mx-auto text-center">
           <div className="mb-8 sm:mb-12">
@@ -510,7 +510,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-4 sm:py-6 px-4 sm:px-6 border-t border-gray-200">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-gray-500 text-xs">&copy; 2024 Anant Kumar.</p>
