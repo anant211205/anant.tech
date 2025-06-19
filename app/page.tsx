@@ -15,6 +15,8 @@ import {
   FolderOpen,
   MessageCircle,
   Home,
+  Menu,
+  X,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -25,6 +27,7 @@ import { useEffect, useState } from "react"
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +52,7 @@ export default function Portfolio() {
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" })
+    setIsMobileMenuOpen(false)
   }
 
   const projects = [
@@ -65,7 +69,7 @@ export default function Portfolio() {
       ],
       tech: ["Next.js", "TypeScript", "MongoDB", "NextAuth.js", "Cloudinary", "JWT"],
       demo: "https://eyedra.engineer/",
-      icon: <Target className="w-5 h-5" />,
+      icon: <Target className="w-4 h-4" />,
       image: "/images/eyedra-screenshot.jpg",
     },
     {
@@ -81,7 +85,7 @@ export default function Portfolio() {
       ],
       tech: ["React", "Stream SDK", "JWT", "React Query", "bcrypt"],
       demo: "https://streamix-pw14.onrender.com/",
-      icon: <Zap className="w-5 h-5" />,
+      icon: <Zap className="w-4 h-4" />,
       image: "/images/streamix-screenshot.jpg",
     },
     {
@@ -97,7 +101,7 @@ export default function Portfolio() {
       ],
       tech: ["Node.js", "Express.js", "MongoDB", "Aggregation Pipelines"],
       github: "https://github.com/anant211205/Backend.git",
-      icon: <Database className="w-5 h-5" />,
+      icon: <Database className="w-4 h-4" />,
     },
   ]
 
@@ -117,23 +121,24 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-1 shadow-lg border border-gray-200">
+      {/* Desktop Navigation - Hidden on mobile */}
+      <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 z-50">
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl p-1 shadow-lg border border-gray-200">
           <div className="flex flex-col space-y-1">
             {navigationItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`group relative w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                className={`group relative w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
                   activeSection === item.id
                     ? "bg-gray-900 text-white shadow-md"
                     : "hover:bg-gray-100 text-gray-600 hover:text-gray-900"
                 }`}
                 title={item.label}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-4 h-4" />
 
-                <div className="absolute right-full mr-3 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                <div className="absolute right-full mr-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                   {item.label}
                 </div>
               </button>
@@ -142,40 +147,81 @@ export default function Portfolio() {
         </div>
       </div>
 
-      <section id="hero" className="min-h-screen flex items-center justify-center px-6 relative">
+      {/* Mobile Navigation */}
+      <div className="lg:hidden fixed top-4 right-4 z-50">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-lg flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm">
+            <div className="absolute top-16 right-4 bg-white rounded-xl p-3 shadow-xl border border-gray-200 min-w-[180px]">
+              <div className="space-y-1">
+                {navigationItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
+                      activeSection === item.id
+                        ? "bg-gray-900 text-white"
+                        : "hover:bg-gray-100 text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Hero Section */}
+      <section id="hero" className="min-h-screen flex items-center justify-center px-4 sm:px-6 relative py-8 sm:py-12">
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"
             style={{
               backgroundImage: `radial-gradient(circle at 1px 1px, gray 1px, transparent 0)`,
-              backgroundSize: "20px 20px",
+              backgroundSize: "16px 16px",
             }}
           ></div>
         </div>
 
-        <div className="text-center max-w-4xl mx-auto relative">
-          <div className="mb-12">
-            <div className="relative mx-auto w-32 h-32 mb-8">
+        <div className="text-center max-w-2xl mx-auto relative">
+          {/* Profile Image */}
+          <div className="mb-6 sm:mb-8">
+            <div className="relative mx-auto w-16 h-16 sm:w-20 sm:h-20 mb-4 sm:mb-6">
               <Image
                 src="/images/profile-photo.jpg"
                 alt="Anant Kumar"
-                width={128}
-                height={128}
-                className="w-full h-32 object-cover rounded-full border-2 border-gray-200"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover rounded-full border-2 border-gray-200"
               />
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
           </div>
 
-          <h1 className="text-6xl md:text-7xl font-light mb-6 text-gray-900 tracking-tight">Anant Kumar</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-3 sm:mb-4 text-gray-900 tracking-tight">
+            Anant Kumar
+          </h1>
 
-          <p className="text-2xl md:text-3xl text-gray-600 mb-4 font-light">Aspiring Software Engineer</p>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-2 sm:mb-3 font-light">
+            Aspiring Software Engineer
+          </p>
 
-          <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed px-4">
             {"Love building apps that solve real problems and complex challenges through innovative technology"}
           </p>
 
-          <div className="flex justify-center space-x-6 mb-12">
+          {/* Social Links */}
+          <div className="flex justify-center space-x-3 sm:space-x-4 mb-6 sm:mb-8">
             {[
               { href: "https://github.com/anant211205", icon: Github, label: "GitHub" },
               { href: "https://www.linkedin.com/in/anant21kumar/", icon: Linkedin, label: "LinkedIn" },
@@ -184,74 +230,77 @@ export default function Portfolio() {
               <Link
                 key={href}
                 href={href}
-                className="p-3 rounded-full border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+                className="p-2 sm:p-2.5 rounded-full border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
                 aria-label={label}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
               </Link>
             ))}
           </div>
 
-          <div className="flex justify-center items-center space-x-8 mb-12 text-sm text-gray-500">
-            <div className="flex items-center space-x-2">
-              <Phone className="w-4 h-4" />
+          {/* Contact Info */}
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 sm:space-x-6 mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500">
+            <div className="flex items-center space-x-1.5">
+              <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>8791902005</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4" />
+            <div className="flex items-center space-x-1.5">
+              <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Solan, HP</span>
             </div>
           </div>
 
           <Button
             onClick={() => scrollToSection("projects")}
-            className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-full transition-all duration-200 hover:shadow-lg"
+            className="bg-gray-900 hover:bg-gray-800 text-white px-5 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all duration-200 hover:shadow-lg text-xs sm:text-sm"
           >
             View My Work
           </Button>
         </div>
       </section>
 
-      <section id="about" className="py-20 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-4 text-gray-900">About Me</h2>
-            <div className="w-16 h-0.5 bg-gray-900 mx-auto"></div>
+      {/* About Section */}
+      <section id="about" className="py-8 sm:py-12 px-4 sm:px-6 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 text-gray-900">About Me</h2>
+            <div className="w-10 h-0.5 bg-gray-900 mx-auto"></div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div className="flex flex-col space-y-8">
+          <div className="grid lg:grid-cols-2 gap-5 sm:gap-8">
+            {/* Education & Leadership */}
+            <div className="flex flex-col space-y-4 sm:space-y-6">
               <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 flex items-center">
-                    <div className="w-2 h-8 bg-gray-900 rounded-full mr-4"></div>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-base sm:text-lg text-gray-900 flex items-center">
+                    <div className="w-1.5 h-5 sm:h-6 bg-gray-900 rounded-full mr-2 sm:mr-3"></div>
                     Education
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="border-l-2 border-gray-200 pl-6">
-                    <h4 className="font-medium text-gray-900 mb-1">Bachelor of Technology</h4>
-                    <p className="text-gray-600 font-medium">Computer Science</p>
-                    <p className="text-gray-500 text-sm mb-3">Jaypee University of Information Technology, Solan</p>
-                    <div className="flex space-x-3">
-                      <Badge variant="outline" className="border-gray-300 text-gray-600">
+                <CardContent className="space-y-3 sm:space-y-4 pt-0">
+                  <div className="border-l-2 border-gray-200 pl-3 sm:pl-4">
+                    <h4 className="font-medium text-gray-900 mb-1 text-xs sm:text-sm">Bachelor of Technology</h4>
+                    <p className="text-gray-600 font-medium text-xs sm:text-sm">Computer Science</p>
+                    <p className="text-gray-500 text-xs mb-2">Jaypee University of Information Technology, Solan</p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      <Badge variant="outline" className="border-gray-300 text-gray-600 text-xs px-2 py-0.5">
                         2022 - 2026
                       </Badge>
-                      <Badge variant="outline" className="border-gray-300 text-gray-600">
+                      <Badge variant="outline" className="border-gray-300 text-gray-600 text-xs px-2 py-0.5">
                         CGPA: 7.9
                       </Badge>
                     </div>
                   </div>
 
-                  <div className="border-l-2 border-gray-200 pl-6">
-                    <h4 className="font-medium text-gray-900 mb-1">12th Standard CBSE</h4>
-                    <p className="text-gray-600 font-medium">Science Stream</p>
-                    <p className="text-gray-500 text-sm mb-3">Gurukul Kurukshetra, Haryana</p>
-                    <div className="flex space-x-3">
-                      <Badge variant="outline" className="border-gray-300 text-gray-600">
+                  <div className="border-l-2 border-gray-200 pl-3 sm:pl-4">
+                    <h4 className="font-medium text-gray-900 mb-1 text-xs sm:text-sm">12th Standard CBSE</h4>
+                    <p className="text-gray-600 font-medium text-xs sm:text-sm">Science Stream</p>
+                    <p className="text-gray-500 text-xs mb-2">Gurukul Kurukshetra, Haryana</p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      <Badge variant="outline" className="border-gray-300 text-gray-600 text-xs px-2 py-0.5">
                         2021 - 2022
                       </Badge>
-                      <Badge variant="outline" className="border-gray-300 text-gray-600">
+                      <Badge variant="outline" className="border-gray-300 text-gray-600 text-xs px-2 py-0.5">
                         90.0%
                       </Badge>
                     </div>
@@ -260,16 +309,18 @@ export default function Portfolio() {
               </Card>
 
               <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="p-2 bg-gray-100 rounded-lg">
-                      <Users className="w-5 h-5 text-gray-600" />
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="p-1.5 bg-gray-100 rounded-lg flex-shrink-0">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">Leadership Role</h3>
-                      <h4 className="font-medium text-gray-700 mb-1">Competitive Programming Team Lead</h4>
-                      <p className="text-gray-600 font-medium mb-3">ACM JUIT Chapter</p>
-                      <p className="text-gray-500 text-sm leading-relaxed">
+                    <div className="min-w-0">
+                      <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-1">Leadership Role</h3>
+                      <h4 className="font-medium text-gray-700 mb-1 text-xs sm:text-sm">
+                        Competitive Programming Team Lead
+                      </h4>
+                      <p className="text-gray-600 font-medium mb-1 sm:mb-2 text-xs sm:text-sm">ACM JUIT Chapter</p>
+                      <p className="text-gray-500 text-xs leading-relaxed">
                         Leading collaborative coding projects, fostering teamwork, and spearheading participation in
                         coding competitions and technical seminars.
                       </p>
@@ -279,21 +330,22 @@ export default function Portfolio() {
               </Card>
             </div>
 
+            {/* Skills */}
             <div className="flex flex-col">
-              <div className="space-y-6">
+              <div className="space-y-3 sm:space-y-4">
                 {Object.entries(skills).map(([category, skillList]) => (
                   <Card
                     key={category}
                     className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
                   >
-                    <CardContent className="p-6">
-                      <h4 className="font-medium text-gray-900 mb-4">{category}</h4>
-                      <div className="flex flex-wrap gap-2">
+                    <CardContent className="p-3 sm:p-4">
+                      <h4 className="font-medium text-gray-900 mb-2 sm:mb-3 text-xs sm:text-sm">{category}</h4>
+                      <div className="flex flex-wrap gap-1">
                         {skillList.map((skill) => (
                           <Badge
                             key={skill}
                             variant="secondary"
-                            className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
+                            className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200 text-xs px-2 py-0.5"
                           >
                             {skill}
                           </Badge>
@@ -308,27 +360,29 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section id="projects" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-4 text-gray-900">Featured Projects</h2>
-            <div className="w-16 h-0.5 bg-gray-900 mx-auto"></div>
+      {/* Projects Section */}
+      <section id="projects" className="py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 text-gray-900">Featured Projects</h2>
+            <div className="w-10 h-0.5 bg-gray-900 mx-auto"></div>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-6 sm:space-y-8">
             {projects.map((project, index) => (
               <Card
                 key={index}
                 className="bg-white border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
                 <div className="grid lg:grid-cols-2 gap-0">
-                  <div className="relative h-64 lg:h-auto">
+                  {/* Project Image */}
+                  <div className="relative h-40 sm:h-48 lg:h-auto order-1 lg:order-none">
                     {project.image ? (
                       <Image
                         src={project.image || "/placeholder.svg"}
                         alt={`${project.title} preview`}
-                        width={600}
-                        height={400}
+                        width={500}
+                        height={300}
                         className="w-full h-full object-cover object-top"
                       />
                     ) : (
@@ -338,54 +392,59 @@ export default function Portfolio() {
                     )}
                   </div>
 
-                  <div className="p-8 space-y-6">
+                  {/* Project Content */}
+                  <div className="p-4 sm:p-5 space-y-3 sm:space-y-4 order-2 lg:order-none">
                     <div>
-                      <div className="flex items-center space-x-3 mb-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">{project.icon}</div>
-                        <div>
-                          <h3 className="text-2xl font-medium text-gray-900">{project.title}</h3>
-                          <p className="text-gray-500 text-sm">{project.period}</p>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <div className="p-1.5 bg-gray-100 rounded-lg flex-shrink-0">{project.icon}</div>
+                        <div className="min-w-0">
+                          <h3 className="text-lg sm:text-xl font-medium text-gray-900 truncate">{project.title}</h3>
+                          <p className="text-gray-500 text-xs">{project.period}</p>
                         </div>
                       </div>
-                      <p className="text-gray-600 leading-relaxed">{project.description}</p>
+                      <p className="text-gray-600 leading-relaxed text-xs sm:text-sm">{project.description}</p>
                     </div>
 
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-3">Key Highlights</h4>
-                      <ul className="space-y-2">
+                      <h4 className="font-medium text-gray-900 mb-2 text-xs sm:text-sm">Key Highlights</h4>
+                      <ul className="space-y-1">
                         {project.highlights.map((highlight, idx) => (
-                          <li key={idx} className="flex items-start space-x-2">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                            <span className="text-gray-600 text-sm">{highlight}</span>
+                          <li key={idx} className="flex items-start space-x-1.5">
+                            <div className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 flex-shrink-0"></div>
+                            <span className="text-gray-600 text-xs leading-relaxed">{highlight}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1">
                       {project.tech.map((tech) => (
-                        <Badge key={tech} variant="outline" className="border-gray-300 text-gray-600">
+                        <Badge
+                          key={tech}
+                          variant="outline"
+                          className="border-gray-300 text-gray-600 text-xs px-2 py-0.5"
+                        >
                           {tech}
                         </Badge>
                       ))}
                     </div>
 
-                    <div className="flex space-x-4 pt-4">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-1 sm:pt-2">
                       {project.github && (
                         <Link
                           href={project.github}
-                          className="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                          className="flex items-center justify-center space-x-1.5 px-3 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 text-xs"
                         >
-                          <Github className="w-4 h-4" />
+                          <Github className="w-3 h-3" />
                           <span>Code</span>
                         </Link>
                       )}
                       {project.demo && (
                         <Link
                           href={project.demo}
-                          className="flex items-center space-x-2 px-4 py-2 bg-gray-900 text-white hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                          className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-gray-900 text-white hover:bg-gray-800 rounded-lg transition-colors duration-200 text-xs"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          <ExternalLink className="w-3 h-3" />
                           <span>Live Demo</span>
                         </Link>
                       )}
@@ -398,20 +457,21 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section id="contact" className="py-20 px-6 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-4 text-gray-900">Get In Touch</h2>
-            <div className="w-16 h-0.5 bg-gray-900 mx-auto"></div>
+      {/* Contact Section */}
+      <section id="contact" className="py-8 sm:py-12 px-4 sm:px-6 bg-gray-50">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="mb-8 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 text-gray-900">Get In Touch</h2>
+            <div className="w-10 h-0.5 bg-gray-900 mx-auto"></div>
           </div>
 
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed px-4">
             {
               "I'm always open to discussing new opportunities, interesting projects, or collaborating on innovative solutions."
             }
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 href: "mailto:anant211205@gmail.com",
@@ -435,14 +495,14 @@ export default function Portfolio() {
               <Link
                 key={contact.href}
                 href={contact.href}
-                className="group flex flex-col items-center space-y-4 p-8 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200"
+                className="group flex flex-col items-center space-y-2 sm:space-y-3 p-4 sm:p-6 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200"
               >
-                <div className="p-4 bg-gray-100 rounded-full group-hover:bg-gray-200 transition-colors duration-200">
-                  <contact.icon className="w-6 h-6 text-gray-600" />
+                <div className="p-2 sm:p-3 bg-gray-100 rounded-full group-hover:bg-gray-200 transition-colors duration-200">
+                  <contact.icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                 </div>
                 <div className="text-center">
-                  <h3 className="font-medium text-gray-900 mb-1">{contact.title}</h3>
-                  <p className="text-gray-500 text-sm">{contact.subtitle}</p>
+                  <h3 className="font-medium text-gray-900 mb-0.5 text-xs sm:text-sm">{contact.title}</h3>
+                  <p className="text-gray-500 text-xs break-all">{contact.subtitle}</p>
                 </div>
               </Link>
             ))}
@@ -450,9 +510,10 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <footer className="py-8 px-6 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-500">&copy; 2024 Anant Kumar.</p>
+      {/* Footer */}
+      <footer className="py-4 sm:py-6 px-4 sm:px-6 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-gray-500 text-xs">&copy; 2024 Anant Kumar.</p>
         </div>
       </footer>
     </div>
