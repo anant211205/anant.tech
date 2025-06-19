@@ -25,12 +25,9 @@ import { useEffect, useState } from "react"
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
-  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
-
       const sections = ["hero", "about", "projects", "contact"]
       const scrollPosition = window.scrollY + 100
 
@@ -175,7 +172,7 @@ export default function Portfolio() {
           <p className="text-2xl md:text-3xl text-gray-600 mb-4 font-light">Aspiring Software Engineer</p>
 
           <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Love building apps that solve real problems and complex challenges through innovative technology
+            {"Love building apps that solve real problems and complex challenges through innovative technology"}
           </p>
 
           <div className="flex justify-center space-x-6 mb-12">
@@ -283,7 +280,6 @@ export default function Portfolio() {
             </div>
 
             <div className="flex flex-col">
-            
               <div className="space-y-6">
                 {Object.entries(skills).map(([category, skillList]) => (
                   <Card
@@ -410,8 +406,9 @@ export default function Portfolio() {
           </div>
 
           <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            I'm always open to discussing new opportunities, interesting projects, or collaborating on innovative
-            solutions.
+            {
+              "I'm always open to discussing new opportunities, interesting projects, or collaborating on innovative solutions."
+            }
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
