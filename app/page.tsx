@@ -78,7 +78,7 @@ export default function Portfolio() {
         "Global communication platform with real-time messaging and video functionality using Stream SDK for connecting people worldwide and language learning.",
       highlights: [
         "Real-time messaging and video functionality",
-        "RESTful APIs with efficient state management",
+        "RESTful APIs for seamless communication",
         "Secure authentication with JWT and bcrypt",
         "Responsive design with React Query optimization",
       ],
@@ -120,7 +120,6 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* Floating Navigation */}
       <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-1 shadow-lg border border-gray-200">
           <div className="flex flex-col space-y-1">
@@ -137,7 +136,6 @@ export default function Portfolio() {
               >
                 <item.icon className="w-5 h-5" />
 
-                {/* Tooltip */}
                 <div className="absolute right-full mr-3 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                   {item.label}
                 </div>
@@ -147,9 +145,7 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center justify-center px-6 relative">
-        {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"
@@ -161,7 +157,6 @@ export default function Portfolio() {
         </div>
 
         <div className="text-center max-w-4xl mx-auto relative">
-          {/* Profile Image */}
           <div className="mb-12">
             <div className="relative mx-auto w-32 h-32 mb-8">
               <Image
@@ -183,7 +178,6 @@ export default function Portfolio() {
             Love building apps that solve real problems and complex challenges through innovative technology
           </p>
 
-          {/* Social Links */}
           <div className="flex justify-center space-x-6 mb-12">
             {[
               { href: "https://github.com/anant211205", icon: Github, label: "GitHub" },
@@ -201,7 +195,6 @@ export default function Portfolio() {
             ))}
           </div>
 
-          {/* Contact Info */}
           <div className="flex justify-center items-center space-x-8 mb-12 text-sm text-gray-500">
             <div className="flex items-center space-x-2">
               <Phone className="w-4 h-4" />
@@ -222,7 +215,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about" className="py-20 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -231,7 +223,6 @@ export default function Portfolio() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Education & Leadership */}
             <div className="flex flex-col space-y-8">
               <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <CardHeader>
@@ -291,7 +282,6 @@ export default function Portfolio() {
               </Card>
             </div>
 
-            {/* Skills */}
             <div className="flex flex-col">
             
               <div className="space-y-6">
@@ -322,7 +312,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Section */}
       <section id="projects" className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -337,7 +326,6 @@ export default function Portfolio() {
                 className="bg-white border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
                 <div className="grid lg:grid-cols-2 gap-0">
-                  {/* Project Image */}
                   <div className="relative h-64 lg:h-auto">
                     {project.image ? (
                       <Image
@@ -354,7 +342,6 @@ export default function Portfolio() {
                     )}
                   </div>
 
-                  {/* Project Content */}
                   <div className="p-8 space-y-6">
                     <div>
                       <div className="flex items-center space-x-3 mb-3">
@@ -415,7 +402,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section id="contact" className="py-20 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-16">
@@ -467,7 +453,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-8 px-6 border-t border-gray-200">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-gray-500">&copy; 2024 Anant Kumar.</p>
