@@ -96,7 +96,7 @@ export default function Portfolio() {
         "Secure authentication with JWT and bcrypt",
         "Responsive design with React Query optimization",
       ],
-      tech: ["React", "Stream SDK", "JWT", "React Query", "bcrypt"],
+      tech: ["React", "Stream SDK", "JWT", "React Query", "bcrypt" , "Node.js" , "Express.js", "MongoDB"],
       demo: "https://streamix-pw14.onrender.com/",
       icon: <Zap className="w-4 h-4" />,
       image: "/images/streamix-screenshot.jpg",
